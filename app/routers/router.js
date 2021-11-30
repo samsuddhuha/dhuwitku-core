@@ -1,20 +1,20 @@
-/**
- * Copyright by https://loizenai.com
- * youtube loizenai
- */
-
 let express = require('express');
 let router = express.Router();
  
-const customers = require('../controllers/controller.js');
+// const customers = require('../controllers/customerController.js');
+const user= require('../controllers/userController.js');
+router.get('/api/user/all', user.getAllUser);
+router.get('/api/user/detail', user.getUserById);
+router.get('/api/user/login', user.login);
+router.post('/api/user/create', user.create);
 
-router.post('/api/customers/create', customers.create);
-router.get('/api/customers/all', customers.retrieveAllCustomers);
-router.get('/api/customers/onebyid/:id', customers.getCustomerById);
-router.get('/api/customers/filteringbyage', customers.filteringByAge);
-router.get('/api/customers/pagination', customers.pagination);
-router.get('/api/customers/pagefiltersort', customers.pagingfilteringsorting);
-router.put('/api/customers/update/:id', customers.updateById);
-router.delete('/api/customers/delete/:id', customers.deleteById);
+// router.post('/api/customers/create', customers.create);
+// router.get('/api/customers/all', customers.retrieveAllCustomers);
+// router.get('/api/customers/onebyid/:id', customers.getCustomerById);
+// router.get('/api/customers/filteringbyage', customers.filteringByAge);
+// router.get('/api/customers/pagination', customers.pagination);
+// router.get('/api/customers/pagefiltersort', customers.pagingfilteringsorting);
+// router.put('/api/customers/update/:id', customers.updateById);
+// router.delete('/api/customers/delete/:id', customers.deleteById);
 
 module.exports = router;
