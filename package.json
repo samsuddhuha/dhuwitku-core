@@ -1,7 +1,7 @@
 {
-  "name": "core-daurplus",
+  "name": "core-bisnisplus",
   "version": "1.0.0",
-  "description": "Core DaurPlus Application",
+  "description": "Core BisnisPlus Application",
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
