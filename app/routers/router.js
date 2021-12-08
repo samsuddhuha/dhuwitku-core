@@ -2,11 +2,17 @@ let express = require('express');
 let router = express.Router();
  
 // const customers = require('../controllers/customerController.js');
-const user= require('../controllers/userController.js');
+const user = require('../controllers/userController.js');
 router.get('/api/user/all', user.getAllUser);
 router.get('/api/user/detail', user.getUserById);
 router.get('/api/user/login', user.login);
 router.post('/api/user/create', user.create);
+
+const product = require('../controllers/productController.js');
+router.get('/api/product/all', product.getAllProduct);
+router.get('/api/product/detail', product.getProductById);
+router.post('/api/product/create', product.create);
+router.post('/api/product/update', product.updateById);
 
 // router.post('/api/customers/create', customers.create);
 // router.get('/api/customers/all', customers.retrieveAllCustomers);

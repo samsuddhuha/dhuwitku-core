@@ -1,8 +1,8 @@
 const env = {
-  database: 'ddh9eciilu2ei6',
-  username: 'kbreesbmqfgtic',
-  password: '6717dc8db080d1ce86d07c35f9500a53eb083dcd3174348afae6a6fce90d5daa',
-  host: 'ec2-3-228-75-39.compute-1.amazonaws.com',
+  database: 'd1jihpkjlbchm',
+  username: 'tgywzjoahdeeje',
+  password: '3427a2b58177dcd32050d7bb3f65252e62bc95a3853dbc800cbc23dfee5aff90',
+  host: 'ec2-34-195-69-118.compute-1.amazonaws.com',
   dialect: 'postgres',
   port: 5432,
   pool: {

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 var bodyParser = require('body-parser');
  
@@ -10,14 +10,14 @@ const db = require('./app/config/dbConfig.js');
 let boolDb = false
 db.sequelize.sync({force: boolDb}).then(() => {
   console.log('Drop and Resync with { force: ${boolDb} }');
-}); 
+});
 
 let router = require('./app/routers/router.js');
 
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
 	res.send({
-    message: "Welcome to Nyatet"
+    message: "Welcome to BisnisPlus"
   });
 });
 app.use('/', router);

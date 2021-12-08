@@ -40,34 +40,62 @@ exports.getUserById = (req, res) => {
 }
 
 exports.create = (req, res) => {
-    let user = {};
+    let userTemp = {};
     try{
-        if (req.body.username == null || req.body.username == ""){
-            res.status(501).json({
-                code: 501,
-                message: "Username can not be empty"
-            });
-            return
-        }
-        if (req.body.password == null || req.body.password == ""){
-            res.status(501).json({
-                code: 501,
-                message: "Password can not be empty"
-            });
-            return
-        }
-        user.username = req.body.username;
-        user.name = req.body.name;
-        user.mail = req.body.mail;
-        user.password = req.body.password;
-    
-        User.create(user).then(result => {    
-            res.status(200).json({
-                code: 200,
-                message: "Successful create user " + user.mail
-            });
-        });
+        User.findOne({ where: { 
+            username : req.body.username
+        }})
+        .then(user => {
+            if (user == null){
+                User.findOne({ where: { 
+                    email : req.body.email
+                }})
+                .then(user => {
+                    if (user == null){
+                        userTemp.username = req.body.username;
+                        userTemp.name = req.body.name;
+                        userTemp.email = req.body.email;
+                        userTemp.password = req.body.password;
+        
+                        User.create(userTemp).then(result => {    
+                            res.status(200).json({
+                                code: 200,
+                                message: "Successful create user " + userTemp.email,
+                                data: result
+                            });
+                        });
+                    }else{
+                        res.status(501).json({
+                            code: 501,
+                            message: "Email is already in use."
+                        });
+                        return
+                    }
+                })
+            }else{
+                res.status(501).json({
+                    code: 501,
+                    message: "Username is already in use."
+                });
+                return
+            }
+        })
+        // if (req.body.username == null || req.body.username == ""){
+        //     res.status(501).json({
+        //         code: 501,
+        //         message: "Username can not be empty"
+        //     });
+        //     return
+        // }
+        // if (req.body.password == null || req.body.password == ""){
+        //     res.status(501).json({
+        //         code: 501,
+        //         message: "Password can not be empty"
+        //     });
+        //     return
+        // }
     }catch(error){
+        console.log(error);
         res.status(500).json({
             code: 500,
             message: "Error : " + error.message

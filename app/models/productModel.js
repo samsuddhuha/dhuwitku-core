@@ -1,26 +1,36 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define('user', {	
+    const Product = sequelize.define('product', {	
         userId: {
 			type: Sequelize.INTEGER,
-			autoIncrement: true,
             field: 'user_id',
-			primaryKey: true
         },
-        username: {
-			type: Sequelize.STRING
+        id: {
+			type: Sequelize.INTEGER,
+			autoIncrement: true,
+            field: 'id',
+			primaryKey: true
         },
         name: {
 			type: Sequelize.STRING
         },
-        email: {
+        description: {
 			type: Sequelize.STRING
         },
-        password: {
+        price: {
+			type: Sequelize.INTEGER
+        },
+        purchasePrice: {
+            field: 'purchase_price',
+			type: Sequelize.INTEGER
+        },
+        stock: {
+			type: Sequelize.INTEGER
+        },
+        active: {
 			type: Sequelize.STRING
         },
-        bisnisType: {
-            field: 'bisnis_type',
-			type: Sequelize.STRING
+        sold: {
+			type: Sequelize.INTEGER
         },
         createdAt: {
             field: 'created_at',
@@ -34,5 +44,5 @@ module.exports = (sequelize, Sequelize) => {
     {
         freezeTableName: true,
     });
-	return User;
+	return Product;
 }
