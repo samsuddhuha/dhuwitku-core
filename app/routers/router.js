@@ -5,7 +5,7 @@ let router = express.Router();
 const user = require('../controllers/userController.js');
 router.get('/api/user/all', user.getAllUser);
 router.get('/api/user/detail', user.getUserById);
-router.post('/api/user/login', user.login);
+router.get('/api/user/login', user.login);
 router.post('/api/user/create', user.create);
 
 const product = require('../controllers/productController.js');
