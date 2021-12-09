@@ -7,13 +7,13 @@ var bodyParser = require('body-parser');
 const db = require('./app/config/dbConfig.js');
 
 // force: true will drop the table if it already exists
-let boolDb = false
+let boolDb = true
 // db.Product.sync({force: boolDb}).then(() => {
 //   console.log('Drop and Resync with { force: ${boolDb} }');
 // });
-db.sequelize.sync({force: boolDb}).then(() => {
-  console.log('Drop and Resync with { force: ${boolDb} }');
-});
+// db.sequelize.sync({force: boolDb}).then(() => {
+//   console.log('Drop and Resync with { force: ${boolDb} }');
+// });
 
 let router = require('./app/routers/router.js');
 
