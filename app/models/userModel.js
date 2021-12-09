@@ -13,6 +13,10 @@ module.exports = (sequelize, Sequelize) => {
             field: 'shop_name',
 			type: Sequelize.STRING
         },
+        shopImage: {
+            field: 'shop_image',
+			type: Sequelize.STRING
+        },
         email: {
 			type: Sequelize.STRING
         },

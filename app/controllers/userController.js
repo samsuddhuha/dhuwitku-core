@@ -76,7 +76,6 @@ exports.register = (req, res) => {
                     return
                 }
                 userTemp.username = req.body.username;
-                userTemp.name = req.body.name;
                 userTemp.email = req.body.email;
                 userTemp.password = bcrypt.hashSync(req.body.password, 8);
 
