@@ -5,9 +5,12 @@ const port = process.env.PORT || 8080
 var bodyParser = require('body-parser');
  
 const db = require('./app/config/dbConfig.js');
-  
+
 // force: true will drop the table if it already exists
 let boolDb = false
+// db.Product.sync({force: boolDb}).then(() => {
+//   console.log('Drop and Resync with { force: ${boolDb} }');
+// });
 db.sequelize.sync({force: boolDb}).then(() => {
   console.log('Drop and Resync with { force: ${boolDb} }');
 });
@@ -21,13 +24,9 @@ app.get('/', (req, res) => {
   });
 });
 app.use('/', router);
+app.use('/resource', express.static('./resource'));
 
 // Create a Server
 app.listen(port, () => {
 	console.log('Listening on port: ' + port)
 })
-// const server = app.listen(port, function () {
-//   let host = server.address().address
-//   let port = server.address().port
-//   console.log("App listening at http://%s:%s", host, port); 
-// })

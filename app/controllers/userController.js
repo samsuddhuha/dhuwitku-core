@@ -1,5 +1,8 @@
 const db = require('../config/dbConfig.js');
+const authConfig = require("../config/authConfig.js");
 const { use } = require('../routers/router.js');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const User = db.User;
 
 exports.getAllUser = (req, res) => {
@@ -39,61 +42,53 @@ exports.getUserById = (req, res) => {
         });
 }
 
-exports.create = (req, res) => {
+exports.register = (req, res) => {
     let userTemp = {};
     try{
         User.findOne({ where: { 
             username : req.body.username
         }})
         .then(user => {
-            if (user == null){
-                User.findOne({ where: { 
-                    email : req.body.email
-                }})
-                .then(user => {
-                    if (user == null){
-                        userTemp.username = req.body.username;
-                        userTemp.name = req.body.name;
-                        userTemp.email = req.body.email;
-                        userTemp.password = req.body.password;
-        
-                        User.create(userTemp).then(result => {    
-                            res.status(200).json({
-                                code: 200,
-                                message: "Successful create user " + userTemp.email,
-                                data: result
-                            });
-                        });
-                    }else{
-                        res.status(501).json({
-                            code: 501,
-                            message: "Email is already in use."
-                        });
-                        return
-                    }
-                })
-            }else{
+            if (user != null){
                 res.status(501).json({
                     code: 501,
                     message: "Username is already in use."
                 });
                 return
+                
             }
+            User.findOne({ where: { 
+                email : req.body.email
+            }})
+            .then(user => {
+                if (user != null){
+                    res.status(501).json({
+                        code: 501,
+                        message: "Email is already in use."
+                    });
+                    return
+                }
+                if(req.body.password.length < 8){
+                    res.status(501).json({
+                        code: 501,
+                        message: "Kata sandi minimal 8 karakter."
+                    });
+                    return
+                }
+                userTemp.username = req.body.username;
+                userTemp.name = req.body.name;
+                userTemp.email = req.body.email;
+                userTemp.password = bcrypt.hashSync(req.body.password, 8);
+
+                User.create(userTemp).then(result => {    
+                    res.status(200).json({
+                        code: 200,
+                        message: "Successful create user " + userTemp.email,
+                        data: result
+                    });
+                });
+            })
         })
-        // if (req.body.username == null || req.body.username == ""){
-        //     res.status(501).json({
-        //         code: 501,
-        //         message: "Username can not be empty"
-        //     });
-        //     return
-        // }
-        // if (req.body.password == null || req.body.password == ""){
-        //     res.status(501).json({
-        //         code: 501,
-        //         message: "Password can not be empty"
-        //     });
-        //     return
-        // }
     }catch(error){
         console.log(error);
         res.status(500).json({
@@ -105,20 +100,35 @@ exports.create = (req, res) => {
 
 exports.login = (req, res) => {
     User.findOne({ where: { 
-        username : req.body.username,
-        password : req.body.password
+        username : req.body.username
     }})
     .then(user => {
         if (user == null){
             res.status(501).json({
                 code: 501,
-                message: "Username or password not incorrect"
+                message: "Username not found"
             });
-        }else{
+            return
+        }
+        var passwordIsValid = bcrypt.compareSync(
+            req.body.password,
+            user.password
+        );
+        if (passwordIsValid) {
+            var token = jwt.sign({ id: user.username }, authConfig.secret, {
+                // expiresIn: 60 // 1 minute
+            });
+        
             res.status(200).json({
                 code: 200,
                 message: "Login Successful",
-                data: user
+                data: user,
+                session: token
+            });
+        }else{
+            res.status(501).json({
+                code: 501,
+                message: "Password not correct"
             });
         }
     })
@@ -130,4 +140,3 @@ exports.login = (req, res) => {
         });
     });
 }
-

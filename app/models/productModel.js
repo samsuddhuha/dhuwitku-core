@@ -16,6 +16,9 @@ module.exports = (sequelize, Sequelize) => {
         description: {
 			type: Sequelize.STRING
         },
+        image: {
+			type: Sequelize.STRING
+        },
         price: {
 			type: Sequelize.INTEGER
         },
@@ -27,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.INTEGER
         },
         active: {
-			type: Sequelize.STRING
+			type: Sequelize.BOOLEAN
         },
         sold: {
 			type: Sequelize.INTEGER
