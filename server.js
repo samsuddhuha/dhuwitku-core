@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   });
 });
 app.use('/', router);
-app.use('./resource', express.static('./resource'));
+app.use('/resource', express.static('./resource'));
 
 // Create a Server
 app.listen(port, () => {
