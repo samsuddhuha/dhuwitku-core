@@ -1,23 +1,22 @@
 let express = require('express');
 let router = express.Router();
+let auth = require("../middleware/auth.js");
+const upload = require("../middleware/upload.js");
  
-// const customers = require('../controllers/customerController.js');
 const user = require('../controllers/userController.js');
-router.get('/api/user/all', user.getAllUser);
-router.post('/api/user/detail', user.getUserById);
 router.post('/api/user/login', user.login);
-router.post('/api/user/create', user.create);
+router.post('/api/user/register', user.register);
+router.get('/api/user/all', auth.verifyToken, user.getAllUser);
+router.post('/api/user/detail', auth.verifyToken, user.getUserById);
 
 const product = require('../controllers/productController.js');
-router.get('/api/product/all', product.getAllProduct);
-router.post('/api/product/detail', product.getProductById);
-router.post('/api/product/create', product.create);
-router.post('/api/product/update', product.updateById);
-
+router.get('/api/product/all', auth.verifyToken, product.getAllProduct);
+router.post('/api/product/detail', auth.verifyToken, product.getProductById);
+router.post('/api/product/create', auth.verifyToken, product.create);
+router.post('/api/product/update', auth.verifyToken, product.updateById);
 
 const uploadController = require("../controllers/uploadController.js");
-const upload = require("../middleware/upload.js");
-router.post("/api/upload", upload.single("file"), uploadController.upload);
+router.post("/api/upload", auth.verifyToken, upload.single("file"), uploadController.upload);
 
 // router.post('/api/customers/create', customers.create);
 // router.get('/api/customers/all', customers.retrieveAllCustomers);

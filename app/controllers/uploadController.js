@@ -9,7 +9,6 @@ exports.upload = async (req, res) => {
         if (req.file == undefined) {
             return res.send("File is empty");
         }
-
         File.create({
             type: req.file.mimetype,
             name: req.file.filename
