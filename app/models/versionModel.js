@@ -1,25 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define('user', {	
-        userId: {
+    const User = sequelize.define('version', {	
+        id: {
 			type: Sequelize.INTEGER,
 			autoIncrement: true,
-            field: 'user_id',
 			primaryKey: true
         },
-        username: {
+        androidMerchantVersion: {
 			type: Sequelize.STRING
         },
-        name: {
+        androidUserVersion: {
 			type: Sequelize.STRING
         },
-        email: {
+        iosMerchantVersion: {
 			type: Sequelize.STRING
         },
-        password: {
-			type: Sequelize.STRING
-        },
-        bisnisType: {
-            field: 'bisnis_type',
+        iosUserVersion: {
 			type: Sequelize.STRING
         },
         createdAt: {

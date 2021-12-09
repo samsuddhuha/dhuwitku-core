@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.INTEGER
         },
         active: {
-			type: Sequelize.STRING
+			type: Sequelize.BOOLEAN
         },
         sold: {
 			type: Sequelize.INTEGER

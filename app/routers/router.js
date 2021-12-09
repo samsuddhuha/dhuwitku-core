@@ -14,6 +14,11 @@ router.post('/api/product/detail', product.getProductById);
 router.post('/api/product/create', product.create);
 router.post('/api/product/update', product.updateById);
 
+
+const uploadController = require("../controllers/uploadController.js");
+const upload = require("../middleware/upload.js");
+router.post("/api/upload", upload.single("file"), uploadController.upload);
+
 // router.post('/api/customers/create', customers.create);
 // router.get('/api/customers/all', customers.retrieveAllCustomers);
 // router.get('/api/customers/onebyid/:id', customers.getCustomerById);
