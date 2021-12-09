@@ -46,6 +46,7 @@ exports.create = (req, res) => {
         productTemp.name = req.body.name;
         productTemp.description = req.body.description;
         productTemp.price = req.body.price;
+        productTemp.image = req.body.image;
         productTemp.purchasePrice = req.body.purchasePrice;
         productTemp.stock = req.body.stock;
         productTemp.active = req.body.active;
