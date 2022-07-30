@@ -1,25 +1,25 @@
-const jwt = require("jsonwebtoken");
-const authConfig = require("../config/authConfig.js");
+// const jwt = require("jsonwebtoken");
+// const authConfig = require("../config/authConfig.js");
 
-exports.verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+// exports.verifyToken = (req, res, next) => {
+//     let token = req.headers["x-access-token"];
 
-    if (!token) {
-        return res.status(402).send({
-            code: 402,
-            message: "No token provided!"
-        });
-    }
+//     if (!token) {
+//         return res.status(402).send({
+//             code: 402,
+//             message: "No token provided!"
+//         });
+//     }
   
-    jwt.verify(token, authConfig.secret, (err, decoded) => {
-      if (err) {
-        return res.status(401).send({
-            code: 401,
-            message: "Unauthorized!",
-            error: err
-        });
-      }
-      req.userId = decoded.id;
-      next();
-    });
-};
+//     jwt.verify(token, authConfig.secret, (err, decoded) => {
+//       if (err) {
+//         return res.status(401).send({
+//             code: 401,
+//             message: "Unauthorized!",
+//             error: err
+//         });
+//       }
+//       req.userId = decoded.id;
+//       next();
+//     });
+// };
