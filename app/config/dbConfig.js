@@ -1,11 +1,14 @@
 const env = require('./env.js');
- 
-import { Pool } from 'pg'
+const Pool = require('pg').Pool
 
-export const pool = new Pool({
+const pool = new Pool({
   user: env.username,
   host: env.host,
   password: env.password,
   database: env.database,
   port: env.port
 })
+
+module.exports = {
+  pool,
+}

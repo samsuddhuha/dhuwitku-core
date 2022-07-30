@@ -4,7 +4,7 @@ let auth = require("../middleware/auth.js");
 const upload = require("../middleware/upload.js");
  
 const user = require('../controllers/userController.js');
-router.post('/api/user/all', user.getUsers);
+router.get('/api/user/all', user.getUsers);
 // router.post('/api/user/register', user.register);
 // router.get('/api/user/all', auth.verifyToken, user.getAllUser);
 // router.post('/api/user/detail', auth.verifyToken, user.getUserById);
