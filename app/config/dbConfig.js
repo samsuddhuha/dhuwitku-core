@@ -1,32 +1,11 @@
 const env = require('./env.js');
  
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(env.database, env.username, env.password, {
+import { Pool } from 'pg'
+
+export const pool = new Pool({
+  user: env.username,
   host: env.host,
-  port: env.port,
-  dialect: env.dialect,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  },
-  pool: {
-    max: env.pool.max,
-    min: env.pool.min,
-    acquire: env.pool.acquire,
-    idle: env.pool.idle
-  }
-});
-
-const db = {};
-
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
- 
-// db.Customer = require('../models/customerModel.js')(sequelize, Sequelize);
-db.File = require('../models/uploadModel.js')(sequelize, Sequelize);
-db.Product = require('../models/productModel.js')(sequelize, Sequelize);
-db.User = require('../models/userModel.js')(sequelize, Sequelize);
- 
-module.exports = db;
+  password: env.password,
+  database: env.database,
+  port: env.port
+})

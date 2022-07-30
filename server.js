@@ -1,26 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 const app = express();
-const port = process.env.PORT || 8080
-
-var bodyParser = require('body-parser');
- 
-const db = require('./app/config/dbConfig.js');
-
-// force: true will drop the table if it already exists
-let boolDb = false
-// db.Product.sync({force: boolDb}).then(() => {
-//   console.log('Drop and Resync with { force: ${boolDb} }');
-// });
-db.sequelize.sync({force: boolDb}).then(() => {
-  console.log('Drop and Resync with { force: ${boolDb} }');
-});
+const port = process.env.PORT || 3000
 
 let router = require('./app/routers/router.js');
 
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
 	res.send({
-    message: "Welcome to BisnisPlus"
+    message: "Welcome to Ngamplop"
   });
 });
 app.use('/', router);

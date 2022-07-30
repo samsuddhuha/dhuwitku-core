@@ -1,16 +1,10 @@
 const env = {
-  database: 'd1jihpkjlbchm',
-  username: 'tgywzjoahdeeje',
-  password: '3427a2b58177dcd32050d7bb3f65252e62bc95a3853dbc800cbc23dfee5aff90',
-  host: 'ec2-34-195-69-118.compute-1.amazonaws.com',
+  database: 'ddilrj4euh96ca',
+  username: 'rgdmuhirqfvvwz',
+  password: '3c7411d70d992c4a30ea673175db8b299af422be9b546bef0aa00c98f8f53696',
+  host: 'ec2-44-208-88-195.compute-1.amazonaws.com',
   dialect: 'postgres',
   port: 5432,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
 };
 
 module.exports = env;
