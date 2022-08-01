@@ -1,5 +1,23 @@
 const db = require('../config/dbConfig.js');
 
+exports.getItems = (request, response) => {
+    db.pool.query('SELECT * FROM m_item', (error, results) => {
+        if (error) {
+            response.json({
+                code: 400,
+                message: error.message,
+                error: error
+            });
+            return
+        }
+        response.json({
+            code: 200,
+            message: "Berhasil mengambil data semua item",
+            data: results.rows
+        });
+    })
+}
+
 exports.addItem = (request, response) => {
     const name = request.body.name
     db.pool.query('SELECT * FROM m_item WHERE LOWER(name_item) = $1', [name.toLowerCase()], (error, results) => {
