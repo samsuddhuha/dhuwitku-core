@@ -2,7 +2,7 @@ const db = require('../config/dbConfig.js');
 
 exports.getDataNgamplop = (request, response) => {
     const id_user = request.body.id_user
-    db.pool.query('SELECT * FROM tr_ngamplop WHERE id_user = $1', [id_user], (error, results) => {
+    db.pool.query('SELECT a.id, a.id_user, a.id_item, b.name_item, a.name, a.origin, a.date_ngamplop, a.nominal, a.status, a.information, a.created_at, a.updated_at  FROM tr_ngamplop a LEFT JOIN m_item b ON a.id_item = b.id_item WHERE id_user = $1', [id_user], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
