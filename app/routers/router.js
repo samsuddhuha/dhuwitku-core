@@ -14,7 +14,7 @@ router.post('/api/register', user.register);
 
 
 const item = require('../controllers/itemController.js');
-router.post('/api/item', item.getItems);
+router.get('/api/item', item.getItems);
 router.post('/api/item/add', item.addItem);
 router.post('/api/item/delete', item.deleteItem);
 
