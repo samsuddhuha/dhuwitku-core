@@ -188,7 +188,7 @@ exports.getTotalCount = (request, response) => {
         }
         response.json({
             code: 200,
-            message: "Total count user id : "+ results[0].id +" ditemukan",
+            message: "Total count user id : "+ id_user +" ditemukan",
             data: results
         });
     })
