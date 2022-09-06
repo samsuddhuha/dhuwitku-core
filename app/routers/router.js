@@ -8,6 +8,7 @@ router.get('/api/user/all', user.getUsers);
 router.post('/api/user/detail', user.getUserById);
 router.post('/api/user/delete', user.deleteUser);
 router.post('/api/user/updateprofile', user.updateProfile);
+router.post('/api/user/totalcount', user.getTotalCount);
 
 router.post('/api/login', user.login);
 router.post('/api/register', user.register);

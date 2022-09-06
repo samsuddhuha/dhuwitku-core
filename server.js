@@ -7,12 +7,12 @@ var bodyParser = require('body-parser');
 let router = require('./app/routers/router.js');
 
 app.use(bodyParser.json());
-app.get('/', (req, res) => {
+app.get('/ngamplop', (req, res) => {
 	res.send({
     message: "Welcome to Ngamplop"
   });
 });
-app.use('/', router);
+app.use('/ngamplop', router);
 app.use('/resource', express.static('./resource'));
 
 // Create a Server

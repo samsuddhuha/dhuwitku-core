@@ -1,5 +1,6 @@
 const db = require('../config/dbConfig.js');
 const bcrypt = require("bcryptjs");
+const mysql = require('mysql');
 
 exports.getUsers = (request, response) => {
     db.pool.query('SELECT * FROM user_apps', (error, results) => {
@@ -14,14 +15,14 @@ exports.getUsers = (request, response) => {
         response.json({
             code: 200,
             message: "Berhasil mengambil data semua user",
-            data: results.rows
+            data: results
         });
     })
 }
 
 exports.getUserById = (request, response) => {
     const id = parseInt(request.body.id)
-    db.pool.query('SELECT * FROM user_apps WHERE id = $1', [id], (error, results) => {
+    db.pool.query('SELECT * FROM user_apps WHERE id = ?', [id], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -30,7 +31,7 @@ exports.getUserById = (request, response) => {
             });
             return
         }
-        if (results.rows.length == 0) {
+        if (results.length == 0) {
             response.json({
                 code: 401,
                 message: "User tidak ditemukan dengan id : " + id
@@ -39,8 +40,8 @@ exports.getUserById = (request, response) => {
         }
         response.json({
             code: 200,
-            message: "Detail user ditemukan dengan id : " + results.rows[0].id + " dan nama : " + results.rows[0].name,
-            data: results.rows[0]
+            message: "Detail user ditemukan dengan id : "+ results[0].id +" dan nama : " + results[0].name,
+            data: results[0]
         });
     })
 }
@@ -48,7 +49,7 @@ exports.getUserById = (request, response) => {
 exports.login = (request, response) => {
     const email = request.body.email
     const password = request.body.password
-    db.pool.query('SELECT * FROM user_apps WHERE email = $1 AND password = $2', [email, password], (error, results) => {
+    db.pool.query('SELECT * FROM user_apps WHERE email = ? AND password = ?', [email, password], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -57,7 +58,7 @@ exports.login = (request, response) => {
             });
             return
         }
-        if (results.rows.length == 0) {
+        if (results.length == 0) {
             response.json({
                 code: 401,
                 message: "Email atau Password salah"
@@ -67,7 +68,7 @@ exports.login = (request, response) => {
         response.json({
             code: 200,
             message: "Login Berhasil",
-            data: results.rows[0]
+            data: results[0]
         });
     })
 }
@@ -76,7 +77,7 @@ exports.register = (request, response) => {
     const name = request.body.name
     const email = request.body.email
     const password = request.body.password
-    db.pool.query('SELECT * FROM user_apps WHERE email = $1', [email], (error, results) => {
+    db.pool.query('SELECT * FROM user_apps WHERE email = ?', [email], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -85,14 +86,14 @@ exports.register = (request, response) => {
             });
             return
         }
-        if (results.rows.length != 0) {
+        if (results.length != 0) {
             response.json({
                 code: 401,
                 message: "Email sudah pernah digunakan"
             });
             return
         }
-        db.pool.query('INSERT INTO user_apps (name, email, password) VALUES ($1, $2, $3) RETURNING *', [name, email, password], (error, results) => {
+        db.pool.query('INSERT INTO user_apps (name, email, password) VALUES (?, ?, ?)', [name, email, password], (error, results) => {
             if (error) {
                 response.json({
                     code: 400,
@@ -104,7 +105,7 @@ exports.register = (request, response) => {
             response.json({
                 code: 200,
                 message: "Pendaftaran Berhasil",
-                data: results.rows[0]
+                data: results[0]
             });
         })
     })
@@ -115,7 +116,7 @@ exports.updateProfile = (request, response) => {
     const name = request.body.name
     const email = request.body.email
     const password = request.body.password
-    db.pool.query('UPDATE user_apps SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *', [name, email, password, id], (error, results) => {
+    db.pool.query('UPDATE user_apps SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, password, id], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -134,7 +135,7 @@ exports.updateProfile = (request, response) => {
 
 exports.deleteUser = (request, response) => {
     const id = parseInt(request.body.id)
-    db.pool.query('SELECT * FROM user_apps WHERE id = $1', [id], (error, results) => {
+    db.pool.query('SELECT * FROM user_apps WHERE id = ?', [id], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -143,14 +144,14 @@ exports.deleteUser = (request, response) => {
             });
             return
         }
-        if (results.rows.length == 0) {
+        if (results.length == 0) {
             response.json({
                 code: 401,
                 message: "User tidak ditemukan"
             });
             return
         }
-        db.pool.query('DELETE FROM user_apps WHERE id = $1', [id], (error, results) => {
+        db.pool.query('DELETE FROM user_apps WHERE id = ?', [id], (error, results) => {
             if (error) {
                 response.json({
                     code: 400,
@@ -161,9 +162,35 @@ exports.deleteUser = (request, response) => {
             }
             response.json({
                 code: 200,
-                message: "Berhasil menghapus data user dengan id : " + id
+                message: "Berhasil menghapus data user dengan id : "+ id
             });
         })
+    })
+}
+
+exports.getTotalCount = (request, response) => {
+    const id_user = parseInt(request.body.id_user)
+    db.pool.query('SELECT * FROM v_total WHERE id_user = ?', [id_user], (error, results) => {
+        if (error) {
+            response.json({
+                code: 400,
+                message: error.message,
+                error: error
+            });
+            return
+        }
+        if (results.length == 0) {
+            response.json({
+                code: 401,
+                message: "Data dengan id user "+ id_user +" tidak ditemukan"
+            });
+            return
+        }
+        response.json({
+            code: 200,
+            message: "Total count user id : "+ results[0].id +" ditemukan",
+            data: results
+        });
     })
 }
 
