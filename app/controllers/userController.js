@@ -1,6 +1,7 @@
 const db = require('../config/dbConfig.js');
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const mysql = require('mysql');
+const authConfig = require("../config/authConfig.js");
 
 exports.getUsers = (request, response) => {
     db.pool.query('SELECT * FROM user_apps', (error, results) => {
@@ -65,10 +66,14 @@ exports.login = (request, response) => {
             });
             return
         }
+        var token = jwt.sign({ id: email }, authConfig.secret, {
+            expiresIn: 31536000 // 1 minute
+        });
         response.json({
             code: 200,
             message: "Login Berhasil",
-            data: results[0]
+            data: results[0],
+            session: token
         });
     })
 }
@@ -76,7 +81,7 @@ exports.login = (request, response) => {
 exports.register = (request, response) => {
     const name = request.body.name
     const email = request.body.email
-    const password = request.body.password
+    const password = bcrypt.hashSync(req.body.password, 8)
     db.pool.query('SELECT * FROM user_apps WHERE email = ?', [email], (error, results) => {
         if (error) {
             response.json({
