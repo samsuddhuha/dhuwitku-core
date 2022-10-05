@@ -81,7 +81,7 @@ exports.login = (request, response) => {
 exports.register = (request, response) => {
     const name = request.body.name
     const email = request.body.email
-    const password = bcrypt.hashSync(req.body.password, 8)
+    const password = request.body.password
     db.pool.query('SELECT * FROM user_apps WHERE email = ?', [email], (error, results) => {
         if (error) {
             response.json({
