@@ -173,9 +173,35 @@ exports.deleteUser = (request, response) => {
     })
 }
 
-exports.getTotalCount = (request, response) => {
+exports.getTotalCountAmplop = (request, response) => {
     const id_user = parseInt(request.body.id_user)
-    db.pool.query('SELECT * FROM v_total WHERE id_user = ?', [id_user], (error, results) => {
+    db.pool.query('SELECT * FROM v_total_amplop WHERE id_user = ?', [id_user], (error, results) => {
+        if (error) {
+            response.json({
+                code: 400,
+                message: error.message,
+                error: error
+            });
+            return
+        }
+        if (results.length == 0) {
+            response.json({
+                code: 401,
+                message: "Data dengan id user "+ id_user +" tidak ditemukan"
+            });
+            return
+        }
+        response.json({
+            code: 200,
+            message: "Total count user id : "+ id_user +" ditemukan",
+            data: results
+        });
+    })
+}
+
+exports.getTotalCountDhuwit= (request, response) => {
+    const id_user = parseInt(request.body.id_user)
+    db.pool.query('SELECT * FROM v_total_dhuwit WHERE id_user = ?', [id_user], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -200,5 +226,62 @@ exports.getTotalCount = (request, response) => {
 }
 
 
+exports.getTotalSpendDhuwitMonth= (request, response) => {
+    const id_user = parseInt(request.body.id_user)
+    const today = new Date()
+    const month = today.getMonth() + 1
 
-  
+    db.pool.query('SELECT SUM(tr_dhuwit.nominal) AS `total_spend_month` FROM tr_dhuwit WHERE MONTH(tr_dhuwit.date_dhuwit) = ? AND id_user = ? AND status = 2', [month ,id_user], (error, results) => {
+        if (error) {
+            response.json({
+                code: 400,
+                message: error.message,
+                error: error
+            });
+            return
+        }
+        if (results.length == 0) {
+            response.json({
+                code: 401,
+                message: "Data dengan id user "+ id_user +" tidak ditemukan"
+            });
+            return
+        }
+        response.json({
+            code: 200,
+            message: "Total bulan ini dengan user id : "+ id_user +" ditemukan",
+            data: results[0]
+        });
+    })
+}
+
+exports.getTotalSpendDhuwitDay= (request, response) => {
+    const id_user = parseInt(request.body.id_user)
+    const date = request.body.date
+
+    const from = date + " 00:00:00"
+    const to = date + " 23:59:59"
+
+    db.pool.query('SELECT SUM(tr_dhuwit.nominal) AS `total_spend_day` FROM tr_dhuwit WHERE tr_dhuwit.date_dhuwit BETWEEN ? AND ? AND id_user = ? AND status = 2', [from, to ,id_user], (error, results) => {
+        if (error) {
+            response.json({
+                code: 400,
+                message: error.message,
+                error: error
+            });
+            return
+        }
+        if (results.length == 0) {
+            response.json({
+                code: 401,
+                message: "Data dengan id user "+ id_user +" tidak ditemukan"
+            });
+            return
+        }
+        response.json({
+            code: 200,
+            message: "Total hari ini dengan user id : "+ id_user +" ditemukan",
+            data: results[0]
+        });
+    })
+}
