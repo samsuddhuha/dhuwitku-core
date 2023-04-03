@@ -50,7 +50,7 @@ exports.getUserById = (request, response) => {
 exports.login = (request, response) => {
     const email = request.body.email
     const password = request.body.password
-    db.pool.query('SELECT * FROM user_apps WHERE email = ? AND password = ?', [email, password], (error, results) => {
+    db.pool.query('SELECT * FROM user_apps WHERE email = ?', [email], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -59,22 +59,35 @@ exports.login = (request, response) => {
             });
             return
         }
+
         if (results.length == 0) {
             response.json({
                 code: 401,
-                message: "Email atau Password salah"
+                message: "Akun tidak ditemukan"
             });
             return
         }
-        var token = jwt.sign({ id: email }, authConfig.secret, {
-            expiresIn: 31536000 // 1 minute
-        });
-        response.json({
-            code: 200,
-            message: "Login Berhasil",
-            data: results[0],
-            session: token
-        });
+
+        var passwordIsValid = bcrypt.compareSync(
+            password,
+            results[0].password
+        );
+        if (passwordIsValid) {
+            var token = jwt.sign({ id: email }, authConfig.secret, {
+                expiresIn: 31536000 // 1 year
+            });
+            response.json({
+                code: 200,
+                message: "Login Berhasil",
+                data: results[0],
+                session: token
+            });
+        } else {
+            response.status(501).json({
+                code: 501,
+                message: "Kata sandi salah"
+            });
+        }
     })
 }
 
@@ -98,7 +111,10 @@ exports.register = (request, response) => {
             });
             return
         }
-        db.pool.query('INSERT INTO user_apps (name, email, password) VALUES (?, ?, ?)', [name, email, password], (error, results) => {
+        
+        var bcrypPassword = bcrypt.hashSync(password, 8)
+
+        db.pool.query('INSERT INTO user_apps (name, email, password) VALUES (?, ?, ?)', [name, email, bcrypPassword], (error, results) => {
             if (error) {
                 response.json({
                     code: 400,
@@ -121,7 +137,10 @@ exports.updateProfile = (request, response) => {
     const name = request.body.name
     const email = request.body.email
     const password = request.body.password
-    db.pool.query('UPDATE user_apps SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, password, id], (error, results) => {
+
+    var bcrypPassword = bcrypt.hashSync(password, 8)
+    
+    db.pool.query('UPDATE user_apps SET name = ?, email = ?, password = ? WHERE id = ?', [name, email, bcrypPassword, id], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -224,7 +243,6 @@ exports.getTotalCountDhuwit= (request, response) => {
         });
     })
 }
-
 
 exports.getTotalSpendDhuwitMonth= (request, response) => {
     const id_user = parseInt(request.body.id_user)
