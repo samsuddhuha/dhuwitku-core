@@ -126,7 +126,7 @@ exports.register = (request, response) => {
             response.json({
                 code: 200,
                 message: "Pendaftaran Berhasil",
-                data: results[0]
+                data: results
             });
         })
     })
@@ -194,7 +194,7 @@ exports.deleteUser = (request, response) => {
 
 exports.getTotalCountAmplop = (request, response) => {
     const id_user = parseInt(request.body.id_user)
-    db.pool.query('SELECT * FROM v_total_amplop WHERE id_user = ?', [id_user], (error, results) => {
+    db.pool.query('SELECT `tr_amplop`.`id_user` AS `id_user`, `tr_amplop`.`status` AS `status`, count(`tr_amplop`.`status`) AS `count`, sum(`tr_amplop`.`nominal`) AS `total` FROM `tr_amplop` GROUP BY `tr_amplop`.`id_user`, `tr_amplop`.`status` ORDER BY `tr_amplop`.`id_user` ASC, `tr_amplop`.`status` ASC', [id_user], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -218,9 +218,9 @@ exports.getTotalCountAmplop = (request, response) => {
     })
 }
 
-exports.getTotalCountDhuwit= (request, response) => {
+exports.getTotalCountDhuwit = (request, response) => {
     const id_user = parseInt(request.body.id_user)
-    db.pool.query('SELECT * FROM v_total_dhuwit WHERE id_user = ?', [id_user], (error, results) => {
+    db.pool.query('SELECT `tr_dhuwit`.`id_user` AS `id_user`, `tr_dhuwit`.`status` AS `status`, count(`tr_dhuwit`.`status`) AS `count`, sum(`tr_dhuwit`.`nominal`) AS `total` FROM `tr_dhuwit` GROUP BY `tr_dhuwit`.`id_user`, `tr_dhuwit`.`status` ORDER BY `tr_dhuwit`.`id_user` ASC, `tr_dhuwit`.`status` ASC', [id_user], (error, results) => {
         if (error) {
             response.json({
                 code: 400,
@@ -244,7 +244,7 @@ exports.getTotalCountDhuwit= (request, response) => {
     })
 }
 
-exports.getTotalSpendDhuwitMonth= (request, response) => {
+exports.getTotalSpendDhuwitMonth = (request, response) => {
     const id_user = parseInt(request.body.id_user)
     const today = new Date()
     const month = today.getMonth() + 1
@@ -273,7 +273,7 @@ exports.getTotalSpendDhuwitMonth= (request, response) => {
     })
 }
 
-exports.getTotalSpendDhuwitDay= (request, response) => {
+exports.getTotalSpendDhuwitDay = (request, response) => {
     const id_user = parseInt(request.body.id_user)
     const date = request.body.date
 

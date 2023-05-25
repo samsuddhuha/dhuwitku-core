@@ -16,6 +16,8 @@ router.post('/api/user/totaldaydhuwit', auth.verifyToken, user.getTotalSpendDhuw
 router.post('/api/login', user.login);
 router.post('/api/register', user.register);
 
+const version = require('../controllers/versionController.js');
+router.post('/api/version/apps', version.getVersion);
 
 const item = require('../controllers/itemController.js');
 router.get('/api/item/all', auth.verifyToken, item.getItems);
