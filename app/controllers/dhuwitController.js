@@ -3,7 +3,7 @@ const statusCode = require('../config/statusCode.js');
 const baseError = require("../middleware/error.js");
 
 exports.createDhuwit = (request, response) => {
-    const id_user = request.body.id_user
+    const id_user = request.id_user
     const date_dhuwit = request.body.date_dhuwit
     const nominal = request.body.nominal
     const status = request.body.status
@@ -22,7 +22,7 @@ exports.createDhuwit = (request, response) => {
 }
 
 exports.getDataDhuwit = (request, response) => {
-    const id_user = request.body.id_user
+    const id_user = request.id_user
 
     let query = "SELECT id, id_user, date_dhuwit, nominal, status, information, created_at, updated_at FROM tr_dhuwit WHERE id_user = ?"
     db.pool.query(query, [id_user], (error, results) => {
@@ -30,7 +30,7 @@ exports.getDataDhuwit = (request, response) => {
         
         response.status(statusCode.success).json({
             code: statusCode.success,
-            message: "Berhasil mengambil data dhuwit user id : "+ id_user,
+            message: "Berhasil mengambil data dhuwit",
             data: results
         });
     })
@@ -38,14 +38,13 @@ exports.getDataDhuwit = (request, response) => {
 
 exports.updateDhuwit = (request, response) => {
     const id = request.body.id
-    const id_user = request.body.id_user
     const date_dhuwit = request.body.date_dhuwit
     const nominal = request.body.nominal
     const status = request.body.status
     const information = request.body.information
 
-    let query = "UPDATE tr_dhuwit SET id_user=?, date_dhuwit=?, nominal=?, status=?, information=? WHERE id = ? ORDER BY date_dhuwit"
-    db.pool.query(query, [id_user, date_dhuwit, nominal, status, information, id], (error, results) => {
+    let query = "UPDATE tr_dhuwit SET date_dhuwit=?, nominal=?, status=?, information=? WHERE id = ? ORDER BY date_dhuwit"
+    db.pool.query(query, [date_dhuwit, nominal, status, information, id], (error, results) => {
         baseError.handleError(error, response)
         
         response.status(statusCode.success).json({

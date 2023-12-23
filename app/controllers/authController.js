@@ -1,4 +1,7 @@
 const db = require('../config/dbConfig.js');
+const authConfig = require("../config/authConfig.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const statusCode = require('../config/statusCode.js');
 const baseError = require("../middleware/error.js");
 
@@ -22,7 +25,7 @@ exports.login = (request, response) => {
             results[0].password
         );
         if (passwordIsValid) {
-            let token = jwt.sign({ id: email }, authConfig.secret, {
+            let token = jwt.sign({ id: results[0].id }, authConfig.secret, {
                 expiresIn: 31536000 // 1 year
             });
             response.status(statusCode.success).json({

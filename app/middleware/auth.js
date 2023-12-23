@@ -20,7 +20,7 @@ exports.verifyToken = (req, res, next) => {
             error: err
         });
       }
-      req.userId = decoded.id;
+      req.id_user = decoded.id;
       next();
     });
 };

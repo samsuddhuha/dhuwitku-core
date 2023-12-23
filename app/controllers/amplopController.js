@@ -3,7 +3,7 @@ const statusCode = require('../config/statusCode.js');
 const baseError = require("../middleware/error.js");
 
 exports.getDataAmplop = (request, response) => {
-    const id_user = request.body.id_user
+    const id_user = request.id_user
 
     let query = "SELECT a.id, a.id_user, a.id_item, b.name_item, a.name, a.origin, a.date_ngamplop, a.nominal, a.status, a.information, a.created_at, a.updated_at  FROM tr_amplop a LEFT JOIN m_item b ON a.id_item = b.id_item WHERE id_user = ? ORDER BY a.date_ngamplop"
     db.pool.query(query, [id_user], (error, results) => {
@@ -11,7 +11,7 @@ exports.getDataAmplop = (request, response) => {
 
         response.status(statusCode.success).json({
             code: statusCode.success,
-            message: "Berhasil mengambil data amplop user id : "+ id_user,
+            message: "Berhasil mengambil data amplop",
             data: results
         });
     })
@@ -33,14 +33,14 @@ exports.getDetailAmplop = (request, response) => {
 
         response.status(statusCode.success).json({
             code: statusCode.success,
-            message: "Berhasil mengambil data detail amplop  id : "+ id,
+            message: "Berhasil mengambil data detail amplop",
             data: results[0]
         });
     })
 }
 
 exports.createAmplop = (request, response) => {
-    const id_user = request.body.id_user
+    const id_user = request.id_user
     const id_item = request.body.id_item
     const name = request.body.name
     const origin = request.body.origin
@@ -63,7 +63,6 @@ exports.createAmplop = (request, response) => {
 
 exports.updateAmplop = (request, response) => {
     const id = request.body.id
-    const id_user = request.body.id_user
     const id_item = request.body.id_item
     const name = request.body.name
     const origin = request.body.origin
@@ -72,8 +71,8 @@ exports.updateAmplop = (request, response) => {
     const status = request.body.status
     const information = request.body.information
 
-    let query = "UPDATE tr_amplop SET id_user=?, id_item=?, name=?, origin=?, date_ngamplop=?, nominal=?, status=?, information=? WHERE id = ?"
-    db.pool.query(query, [id_user, id_item, name, origin, date_ngamplop, nominal, status, information, id], (error, results) => {
+    let query = "UPDATE tr_amplop SET id_item=?, name=?, origin=?, date_ngamplop=?, nominal=?, status=?, information=? WHERE id = ?"
+    db.pool.query(query, [id_item, name, origin, date_ngamplop, nominal, status, information, id], (error, results) => {
         baseError.handleError(error, response)
         
         response.status(statusCode.success).json({
