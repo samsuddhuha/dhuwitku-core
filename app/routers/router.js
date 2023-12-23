@@ -1,7 +1,14 @@
-let express = require('express');
-let router = express.Router();
-let auth = require("../middleware/auth.js");
+const express = require('express');
+const router = express.Router();
+const auth = require("../middleware/auth.js");
 // const upload = require("../middleware/upload.js");
+
+const version = require('../controllers/versionController.js');
+router.post('/api/version/apps', version.getVersion);
+
+const authController = require('../controllers/authController.js');
+router.post('/api/login', authController.login);
+router.post('/api/register', authController.register);
  
 const user = require('../controllers/userController.js');
 router.get('/api/user/all', auth.verifyToken, user.getUsers);
@@ -13,17 +20,10 @@ router.post('/api/user/totalcountdhuwit', auth.verifyToken, user.getTotalCountDh
 router.post('/api/user/totalmonthdhuwit', auth.verifyToken, user.getTotalSpendDhuwitMonth);
 router.post('/api/user/totaldaydhuwit', auth.verifyToken, user.getTotalSpendDhuwitDay);
 
-router.post('/api/login', user.login);
-router.post('/api/register', user.register);
-
-const version = require('../controllers/versionController.js');
-router.post('/api/version/apps', version.getVersion);
-
 const item = require('../controllers/itemController.js');
 router.get('/api/item/all', auth.verifyToken, item.getItems);
 router.post('/api/item/add', item.addItem);
 router.post('/api/item/delete', item.deleteItem);
-
 
 const amplop = require('../controllers/amplopController.js');
 router.post('/api/amplop/list', auth.verifyToken, amplop.getDataAmplop);
@@ -31,7 +31,6 @@ router.post('/api/amplop/detail', auth.verifyToken, amplop.getDetailAmplop);
 router.post('/api/amplop/create', auth.verifyToken, amplop.createAmplop);
 router.post('/api/amplop/delete', auth.verifyToken, amplop.deleteAmplop);
 router.post('/api/amplop/update', auth.verifyToken, amplop.updateAmplop);
-
 
 const dhuwit = require('../controllers/dhuwitController.js');
 router.post('/api/dhuwit/list', auth.verifyToken, dhuwit.getDataDhuwit);

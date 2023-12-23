@@ -1,17 +1,13 @@
 const db = require('../config/dbConfig.js');
+const statusCode = require('../config/statusCode.js');
+const baseError = require("../middleware/error.js");
 
 exports.getItems = (request, response) => {
-    db.pool.query('SELECT * FROM m_item', (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
-        response.json({
-            code: 200,
+    db.pool.query("SELECT * FROM m_item", (error, results) => {
+        baseError.handleError(error, response)
+        
+        response.status(statusCode.success).json({
+            code: statusCode.success,
             message: "Berhasil mengambil data semua item",
             data: results
         });
@@ -20,33 +16,24 @@ exports.getItems = (request, response) => {
 
 exports.addItem = (request, response) => {
     const name = request.body.name
-    db.pool.query('SELECT * FROM m_item WHERE LOWER(name_item) = ?', [name.toLowerCase()], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
+    
+    let querySelect = "SELECT * FROM m_item WHERE LOWER(name_item) = ?"
+    db.pool.query(querySelect, [name.toLowerCase()], (error, results) => {
+        baseError.handleError(error, response)
+
         if (results.length != 0) {
-            response.json({
-                code: 401,
+            return response.status(statusCode.already_exists).json({
+                code: statusCode.already_exists,
                 message: "Nama item sudah ada"
             });
-            return
         }
-        db.pool.query('INSERT INTO m_item (name_item) VALUES (?)', [name], (error, results) => {
-            if (error) {
-                response.json({
-                    code: 400,
-                    message: error.message,
-                    error: error
-                });
-                return
-            }
-            response.json({
-                code: 200,
+
+        let queryInsert = "INSERT INTO m_item (name_item) VALUES (?)"
+        db.pool.query(queryInsert, [name], (error, results) => {
+            baseError.handleError(error, response)
+            
+            response.status(statusCode.success).json({
+                code: statusCode.success,
                 message: "Penambahan item Berhasil",
                 data: results[0]
             });
@@ -56,33 +43,24 @@ exports.addItem = (request, response) => {
 
 exports.deleteItem = (request, response) => {
     const name = request.body.name
-    db.pool.query('SELECT * FROM m_item WHERE name_item = ?', [name], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
+
+    let querySelect = "SELECT * FROM m_item WHERE name_item = ?"
+    db.pool.query(querySelect, [name], (error, results) => {
+        baseError.handleError(error, response)
+
         if (results.length == 0) {
-            response.json({
-                code: 401,
+             return response.status(statusCode.empty_data).json({
+                code: statusCode.empty_data,
                 message: "Item tidak ditemukan"
             });
-            return
         }
-        db.pool.query('DELETE FROM m_item WHERE name_item = ?', [name], (error, results) => {
-            if (error) {
-                response.json({
-                    code: 400,
-                    message: error.message,
-                    error: error
-                });
-                return
-            }
-            response.json({
-                code: 200,
+
+        let queryDelete = "DELETE FROM m_item WHERE name_item = ?"
+        db.pool.query(queryDelete, [name], (error, results) => {
+            baseError.handleError(error, response)
+            
+            response.status(statusCode.success).json({
+                code: statusCode.success,
                 message: "Berhasil menghapus item dengan nama : " + name
             });
         })

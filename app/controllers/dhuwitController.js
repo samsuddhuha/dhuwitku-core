@@ -1,4 +1,6 @@
 const db = require('../config/dbConfig.js');
+const statusCode = require('../config/statusCode.js');
+const baseError = require("../middleware/error.js");
 
 exports.createDhuwit = (request, response) => {
     const id_user = request.body.id_user
@@ -6,18 +8,13 @@ exports.createDhuwit = (request, response) => {
     const nominal = request.body.nominal
     const status = request.body.status
     const information = request.body.information
-    db.pool.query('INSERT INTO tr_dhuwit (id_user, date_dhuwit, nominal, status, information) VALUES (?, ?, ?, ?, ?)', 
-    [id_user, date_dhuwit, nominal, status, information], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
-        response.json({
-            code: 200,
+
+    let query = "INSERT INTO tr_dhuwit (id_user, date_dhuwit, nominal, status, information) VALUES (?, ?, ?, ?, ?)"
+    db.pool.query(query, [id_user, date_dhuwit, nominal, status, information], (error, results) => {
+        baseError.handleError(error, response)
+        
+        response.status(statusCode.success).json({
+            code: statusCode.success,
             message: "Hore penambahan data dhuwit Berhasil",
             data: results[0]
         });
@@ -26,17 +23,13 @@ exports.createDhuwit = (request, response) => {
 
 exports.getDataDhuwit = (request, response) => {
     const id_user = request.body.id_user
-    db.pool.query('SELECT id, id_user, date_dhuwit, nominal, status, information, created_at, updated_at FROM tr_dhuwit WHERE id_user = ?', [id_user], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
-        response.json({
-            code: 200,
+
+    let query = "SELECT id, id_user, date_dhuwit, nominal, status, information, created_at, updated_at FROM tr_dhuwit WHERE id_user = ?"
+    db.pool.query(query, [id_user], (error, results) => {
+        baseError.handleError(error, response)
+        
+        response.status(statusCode.success).json({
+            code: statusCode.success,
             message: "Berhasil mengambil data dhuwit user id : "+ id_user,
             data: results
         });
@@ -50,18 +43,13 @@ exports.updateDhuwit = (request, response) => {
     const nominal = request.body.nominal
     const status = request.body.status
     const information = request.body.information
-    db.pool.query('UPDATE tr_dhuwit SET id_user=?, date_dhuwit=?, nominal=?, status=?, information=? WHERE id = ? ORDER BY date_dhuwit', 
-    [id_user, date_dhuwit, nominal, status, information, id], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
-        response.json({
-            code: 200,
+
+    let query = "UPDATE tr_dhuwit SET id_user=?, date_dhuwit=?, nominal=?, status=?, information=? WHERE id = ? ORDER BY date_dhuwit"
+    db.pool.query(query, [id_user, date_dhuwit, nominal, status, information, id], (error, results) => {
+        baseError.handleError(error, response)
+        
+        response.status(statusCode.success).json({
+            code: statusCode.success,
             message: "Upate data dhuwit Berhasil",
             data: results[0]
         });
@@ -70,33 +58,24 @@ exports.updateDhuwit = (request, response) => {
 
 exports.deleteDhuwit = (request, response) => {
     const id = request.body.id
-    db.pool.query('SELECT * FROM tr_dhuwit WHERE id = ?', [id], (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
+
+    let querySelect = "SELECT * FROM tr_dhuwit WHERE id = ?"
+    db.pool.query(querySelect, [id], (error, results) => {
+        baseError.handleError(error, response)
+
         if (results.length == 0) {
-            response.json({
-                code: 401,
+            return response.status(statusCode.empty_data).json({
+                code: statusCode.empty_data,
                 message: "Data dhuwit tidak ditemukan"
             });
-            return
         }
-        db.pool.query('DELETE FROM tr_dhuwit WHERE id = ?', [id], (error, results) => {
-            if (error) {
-                response.json({
-                    code: 400,
-                    message: error.message,
-                    error: error
-                });
-                return
-            }
-            response.json({
-                code: 200,
+
+        let queryDelete = "DELETE FROM tr_dhuwit WHERE id = ?"
+        db.pool.query(queryDelete, [id], (error, results) => {
+            baseError.handleError(error, response)
+            
+            response.status(statusCode.success).json({
+                code: statusCode.success,
                 message: "Berhasil menghapus data dhuwit"
             });
         })

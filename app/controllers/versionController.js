@@ -1,16 +1,13 @@
 const db = require('../config/dbConfig.js');
+const statusCode = require('../config/statusCode.js');
+const baseError = require("../middleware/error.js");
 
 exports.getVersion = (request, response) => {
     const reqVersionSplit = request.body.version.split(".");
-    db.pool.query('SELECT * FROM m_version', (error, results) => {
-        if (error) {
-            response.json({
-                code: 400,
-                message: error.message,
-                error: error
-            });
-            return
-        }
+
+    db.pool.query("SELECT * FROM m_version", (error, results) => {
+        baseError.handleError(error, response)
+
         var updateApps = false
         var message = "Aplikasi sudah version terbaru"
 
@@ -21,16 +18,18 @@ exports.getVersion = (request, response) => {
             let version = parseInt(versionSplit[index])
             if (reqVersion < version) {
                 updateApps = true
-                message = "Update aplikasi anda di playstore!"
+                message = "Update Aplikasi di Playstore"
             }
         }
-        var data = {
+
+        let  data = {
             new_version_apps: version,
             update_apps: updateApps,
             force_update: results[0].force_update
         };
-        response.json({
-            code: 200,
+        let status = updateApps ? statusCode.update_aplication : statusCode.success
+        response.status(status).json({
+            code: status,
             message: message,
             data: data
         });
