@@ -11,7 +11,7 @@ exports.getVersion = (request, response) => {
         var updateApps = false
         var message = "Aplikasi sudah version terbaru"
 
-        let version = results[0].android_version;
+        let version = results[results.length - 1].android_version;
         let versionSplit = version.split(".");
         for (const index in versionSplit) { 
             let reqVersion = parseInt(reqVersionSplit[index])
@@ -25,7 +25,7 @@ exports.getVersion = (request, response) => {
         let  data = {
             new_version_apps: version,
             update_apps: updateApps,
-            force_update: results[0].force_update
+            force_update: results[results.length - 1].force_update
         };
         let status = updateApps ? statusCode.update_aplication : statusCode.success
         response.status(status).json({
