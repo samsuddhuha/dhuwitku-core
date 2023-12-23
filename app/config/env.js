@@ -1,8 +1,8 @@
 const env = {
-  database: 'bb7vvievkitefaonoy4x',
-  username: 'uunavsqfed0ym6pp',
-  password: 'cW8V2RgS3SPacYmYxoph',
-  host: 'bb7vvievkitefaonoy4x-mysql.services.clever-cloud.com',
+  database: 'bqei3onq5qrcvwvywdjm',
+  username: 'uydfwisxdsjnzdvv',
+  password: 'YMiEQWXR3YTKEmwtUc9r',
+  host: 'bqei3onq5qrcvwvywdjm-mysql.services.clever-cloud.com',
 };
 
 module.exports = env;
