@@ -35,7 +35,7 @@ exports.login = (request, response) => {
                 session: token
             });
         } else {
-            response.status(statusCode.wrong_password).json({
+            response.json({
                 code: statusCode.wrong_password,
                 message: "Kata sandi salah"
             });
