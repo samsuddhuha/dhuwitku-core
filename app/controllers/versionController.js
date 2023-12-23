@@ -27,9 +27,8 @@ exports.getVersion = (request, response) => {
             update_apps: updateApps,
             force_update: results[0].force_update
         };
-        let status = updateApps ? statusCode.update_aplication : statusCode.success
-        response.status(status).json({
-            code: status,
+        response.status(statusCode.success).json({
+            code: statusCode.success,
             message: message,
             data: data
         });
