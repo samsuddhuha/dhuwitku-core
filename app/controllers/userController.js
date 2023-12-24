@@ -7,7 +7,7 @@ exports.getUsers = (request, response) => {
     db.pool.query("SELECT * FROM user_apps", (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Berhasil mengambil data semua user",
             data: results
@@ -23,13 +23,13 @@ exports.getUserById = (request, response) => {
         baseError.handleError(error, response)
         
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "User tidak ditemukan dengan id : " + id
             });
         }
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Detail user ditemukan dengan id : "+ results[0].id +" dan nama : " + results[0].name,
             data: results[0]
@@ -49,7 +49,7 @@ exports.updateProfile = (request, response) => {
     db.pool.query(query, [name, email, bcrypPassword, id], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Update profile Berhasil",
             data: results
@@ -65,7 +65,7 @@ exports.deleteUser = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "User tidak ditemukan"
             });
@@ -75,7 +75,7 @@ exports.deleteUser = (request, response) => {
         db.pool.query(queryDelete, [id], (error, results) => {
             baseError.handleError(error, response)
             
-            response.status(statusCode.success).json({
+            response.json({
                 code: statusCode.success,
                 message: "Berhasil menghapus data user dengan id : "+ id
             });
@@ -91,13 +91,13 @@ exports.getTotalCountAmplop = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data dengan id user "+ id_user +" tidak ditemukan"
             });
         }
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Total count user id : "+ id_user +" ditemukan",
             data: results
@@ -113,13 +113,13 @@ exports.getTotalCountDhuwit = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data dengan id user "+ id_user +" tidak ditemukan"
             });
         }
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Total count user id : "+ id_user +" ditemukan",
             data: results
@@ -137,13 +137,13 @@ exports.getTotalSpendDhuwitMonth = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data dengan id user "+ id_user +" tidak ditemukan"
             });
         }
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Total bulan ini dengan user id : "+ id_user +" ditemukan",
             data: results[0]
@@ -163,13 +163,13 @@ exports.getTotalSpendDhuwitDay = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data dengan id user "+ id_user +" tidak ditemukan"
             });
         }
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Total hari ini dengan user id : "+ id_user +" ditemukan",
             data: results[0]

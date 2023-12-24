@@ -13,7 +13,7 @@ exports.createDhuwit = (request, response) => {
     db.pool.query(query, [id_user, date_dhuwit, nominal, status, information], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Hore penambahan data dhuwit Berhasil",
             data: results[0]
@@ -28,7 +28,7 @@ exports.getDataDhuwit = (request, response) => {
     db.pool.query(query, [id_user], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Berhasil mengambil data dhuwit",
             data: results
@@ -47,7 +47,7 @@ exports.updateDhuwit = (request, response) => {
     db.pool.query(query, [date_dhuwit, nominal, status, information, id], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Upate data dhuwit Berhasil",
             data: results[0]
@@ -63,7 +63,7 @@ exports.deleteDhuwit = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data dhuwit tidak ditemukan"
             });
@@ -73,7 +73,7 @@ exports.deleteDhuwit = (request, response) => {
         db.pool.query(queryDelete, [id], (error, results) => {
             baseError.handleError(error, response)
             
-            response.status(statusCode.success).json({
+            response.json({
                 code: statusCode.success,
                 message: "Berhasil menghapus data dhuwit"
             });

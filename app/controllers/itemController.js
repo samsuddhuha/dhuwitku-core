@@ -6,7 +6,7 @@ exports.getItems = (request, response) => {
     db.pool.query("SELECT * FROM m_item", (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Berhasil mengambil data semua item",
             data: results
@@ -22,7 +22,7 @@ exports.addItem = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length != 0) {
-            return response.status(statusCode.already_exists).json({
+            return response.json({
                 code: statusCode.already_exists,
                 message: "Nama item sudah ada"
             });
@@ -32,7 +32,7 @@ exports.addItem = (request, response) => {
         db.pool.query(queryInsert, [name], (error, results) => {
             baseError.handleError(error, response)
             
-            response.status(statusCode.success).json({
+            response.json({
                 code: statusCode.success,
                 message: "Penambahan item Berhasil",
                 data: results[0]
@@ -49,7 +49,7 @@ exports.deleteItem = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-             return response.status(statusCode.empty_data).json({
+             return response.json({
                 code: statusCode.empty_data,
                 message: "Item tidak ditemukan"
             });
@@ -59,7 +59,7 @@ exports.deleteItem = (request, response) => {
         db.pool.query(queryDelete, [name], (error, results) => {
             baseError.handleError(error, response)
             
-            response.status(statusCode.success).json({
+            response.json({
                 code: statusCode.success,
                 message: "Berhasil menghapus item dengan nama : " + name
             });

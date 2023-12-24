@@ -9,7 +9,7 @@ exports.getDataAmplop = (request, response) => {
     db.pool.query(query, [id_user], (error, results) => {
         baseError.handleError(error, response)
 
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Berhasil mengambil data amplop",
             data: results
@@ -25,13 +25,13 @@ exports.getDetailAmplop = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data detail amplop tidak ditemukan"
             });
         }
 
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Berhasil mengambil data detail amplop",
             data: results[0]
@@ -53,7 +53,7 @@ exports.createAmplop = (request, response) => {
     db.pool.query(query, [id_user, id_item, name, origin, date_ngamplop, nominal, status, information], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Hore penambahan data amplop Berhasil",
             data: results[0]
@@ -75,7 +75,7 @@ exports.updateAmplop = (request, response) => {
     db.pool.query(query, [id_item, name, origin, date_ngamplop, nominal, status, information, id], (error, results) => {
         baseError.handleError(error, response)
         
-        response.status(statusCode.success).json({
+        response.json({
             code: statusCode.success,
             message: "Upate data amplop Berhasil",
             data: results[0]
@@ -91,7 +91,7 @@ exports.deleteAmplop = (request, response) => {
         baseError.handleError(error, response)
 
         if (results.length == 0) {
-            return response.status(statusCode.empty_data).json({
+            return response.json({
                 code: statusCode.empty_data,
                 message: "Data ngamplop tidak ditemukan"
             });
@@ -101,7 +101,7 @@ exports.deleteAmplop = (request, response) => {
         db.pool.query(queryDelete, [id], (error, results) => {
             baseError.handleError(error, response)
             
-            response.status(statusCode.success).json({
+            response.json({
                 code: statusCode.success,
                 message: "Berhasil menghapus data amplop"
             });
