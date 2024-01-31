@@ -14,6 +14,10 @@ app.get('/', (req, res) => {
 });
 app.use('/', router);
 app.use('/resource', express.static('./resource'));
+app.set('view engine', 'ejs');
+app.get('/privacypolicy', (req, res) => {
+  res.render('./app/view/privacypolicy');
+});
 
 // Create a Server
 app.listen(port, () => {
