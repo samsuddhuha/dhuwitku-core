@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 app.use('/', router);
 // app.use('/resource', express.static('./resource'));
 app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
 app.get('/privacypolicy', (req, res) => {
   res.render('./app/view/privacypolicy');
 });
