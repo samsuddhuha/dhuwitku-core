@@ -16,9 +16,17 @@ app.use('/', router);
 // app.use('/resource', express.static('./resource'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.get('/privacypolicy', (req, res) => {
+app.set('views', __dirname);
+
+app.get('/', function(req, res){
   res.render('./app/view/privacypolicy');
 });
+
+// app.use(express.static(__dirname + '../public'));
+// app.set('view engine', 'ejs');
+// app.get('/privacypolicy', (req, res) => {
+//   res.render('./app/view/privacypolicy');
+// });
 
 // Create a Server
 app.listen(port, () => {
