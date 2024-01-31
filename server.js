@@ -18,7 +18,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
-app.get('/', function(req, res){
+app.get('/privacypolicy', function(req, res){
   res.render('./app/view/privacypolicy');
 });
 
