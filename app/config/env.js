@@ -1,8 +1,8 @@
 const env = {
-  database: 'bqei3onq5qrcvwvywdjm',
-  username: 'uydfwisxdsjnzdvv',
-  password: 'YMiEQWXR3YTKEmwtUc9r',
-  host: 'bqei3onq5qrcvwvywdjm-mysql.services.clever-cloud.com',
+  database: 'freedb_dhuwitku',
+  username: 'freedb_dhuwitku',
+  password: 'WABZpJ!*53Z!@?D',
+  host: 'sql.freedb.tech',
 };
 
 module.exports = env;
