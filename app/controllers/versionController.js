@@ -10,6 +10,7 @@ exports.getVersion = (request, response) => {
 
         var updateApps = false
         var message = "Aplikasi sudah version terbaru"
+        console.log(results)
 
         let version = results[0].android_version;
         let versionSplit = version.split(".");
