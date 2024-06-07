@@ -1,10 +1,11 @@
 const express = require('express');
+const serverless = require("serverless-http");
 const app = express();
-const port = process.env.PORT || 3000
+const router = express.Router();
 
 var bodyParser = require('body-parser');
 
-let router = require('./app/routers/router.js');
+let routerApps = require('../app/routers/router.js');
 
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
@@ -12,7 +13,7 @@ app.get('/', (req, res) => {
     message: "Welcome to DhuwitKu"
   });
 });
-app.use('/', router);
+app.use('/', routerApps);
 // app.use('/resource', express.static('./resource'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -22,7 +23,5 @@ app.get('/privacypolicy', function(req, res){
   res.render('./app/view/privacypolicy');
 });
 
-// Create a Server
-app.listen(port, () => {
-	console.log('Listening on port: ' + port)
-})
+app.use("/.netlify/functions/app", router);
+module.exports.handler = serverless(app);
