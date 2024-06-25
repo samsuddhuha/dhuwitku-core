@@ -24,7 +24,7 @@ exports.createDhuwit = (request, response) => {
 exports.getDataDhuwit = (request, response) => {
     const id_user = request.id_user
 
-    let query = "SELECT id, id_user, date_dhuwit, nominal, status, information, created_at, updated_at FROM tr_dhuwit WHERE id_user = ?"
+    let query = "SELECT id, id_user, date_dhuwit, nominal, status, information, created_at, updated_at FROM tr_dhuwit WHERE id_user = ? ORDER BY date_dhuwit ASC"
     db.pool.query(query, [id_user], (error, results) => {
         baseError.handleError(error, response)
         
